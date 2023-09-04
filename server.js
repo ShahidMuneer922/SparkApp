@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 import statsRouter from "./controller/stats/statsRoutes.js";
 import portfolioRouter from "./controller/portfolio/portfolioRoutes.js";
 import reviewsRouter from "./controller/reviews/reviewsRoutes.js";
-import ServerlessHttp from "serverless-http";
 const doten = dotenv.config();
 import fileUpload from "express-fileupload";
 const PORT = process.env.PORT || 8000;
@@ -38,5 +37,3 @@ try {
     console.log(err);
   };
 }
-
-export const handler = ServerlessHttp(app);
