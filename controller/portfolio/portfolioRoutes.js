@@ -10,7 +10,7 @@ import {
 /** @format */
 
 const router = express.Router();
-router.put("/addPortfolio", addPortfolio);
+router.post("/addPortfolio", addPortfolio);
 router.get("/get", getAllFiles);
 router.get("/getFile", getFile);
 router.put("/updateFile", updatePortfolio);

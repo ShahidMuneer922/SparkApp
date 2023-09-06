@@ -17,6 +17,8 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(express.json());
 app.use(fileUpload());
+app.use("/", statsRouter);
+
 app.use("/api", statsRouter);
 app.use("/api", portfolioRouter);
 app.use("/api", reviewsRouter);

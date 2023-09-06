@@ -32,17 +32,13 @@ export const addPortfolio = async (req, res) => {
 };
 
 export const getAllFiles = async (req, res) => {
-  let list = [];
   try {
     const files = await File.find();
 
     if (!files || files.length === 0) {
-      return res.status(404).send("No files found");
+      return res.status(404).json({ error: "No files found" });
     }
-
-    const fileNames = await files.map((file) => file);
-
-    return res.json(fileNames);
+    return res.json(files);
   } catch (err) {
     console.error(err);
     return res
