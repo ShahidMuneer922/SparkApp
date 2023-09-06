@@ -33,3 +33,20 @@ const reviewsSchema = new mongoose.Schema({
 });
 
 export const reviews = mongoose.model("reviews", reviewsSchema);
+
+const teamSchema = new mongoose.Schema({
+  category: String,
+  image: String,
+  name: String,
+  rank: String,
+});
+export const teamsSchema = mongoose.model("team", teamSchema);
+
+const vacancySchema = new mongoose.Schema({
+  title: String,
+  intro: String,
+  roles: Array,
+  qualifications: Array,
+  perks: Array,
+});
+export const vacanciesSchema = mongoose.model("vacancy", vacancySchema);

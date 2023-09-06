@@ -6,6 +6,10 @@ import dotenv from "dotenv";
 import statsRouter from "./controller/stats/statsRoutes.js";
 import portfolioRouter from "./controller/portfolio/portfolioRoutes.js";
 import reviewsRouter from "./controller/reviews/reviewsRoutes.js";
+import teamRouter from "./controller/team/teamRoutes.js";
+import emailRouter from "./controller/email/emailRoutes.js";
+import vancanyRouter from "./controller/vacancies/vacanciesRoutes.js";
+
 const doten = dotenv.config();
 import fileUpload from "express-fileupload";
 const PORT = process.env.PORT || 8000;
@@ -16,6 +20,9 @@ app.use(fileUpload());
 app.use("/api", statsRouter);
 app.use("/api", portfolioRouter);
 app.use("/api", reviewsRouter);
+app.use("/api", teamRouter);
+app.use("/api", emailRouter);
+app.use("/api", vancanyRouter);
 
 mongoose
   .connect(
