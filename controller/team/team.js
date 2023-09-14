@@ -4,7 +4,7 @@ import { teamsSchema } from "../../models/model.js";
 
 export const addTeam = async (req, res) => {
   try {
-    const { rank, category, name } = req.body;
+    const { rank, position, name } = req.body;
 
     if (!req.files || !req.files.file) {
       return res.status(400).json({ message: "Please upload an image" });
@@ -15,7 +15,7 @@ export const addTeam = async (req, res) => {
 
     const newTeam = await teamsSchema.create({
       rank,
-      category,
+      position,
       name,
       image: base64,
     });
