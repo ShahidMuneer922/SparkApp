@@ -9,6 +9,7 @@ import reviewsRouter from "./controller/reviews/reviewsRoutes.js";
 import teamRouter from "./controller/team/teamRoutes.js";
 import emailRouter from "./controller/email/emailRoutes.js";
 import vancanyRouter from "./controller/vacancies/vacanciesRoutes.js";
+import adminRouter from "./controller/admin-login/adminRoutes.js";
 
 const doten = dotenv.config();
 import fileUpload from "express-fileupload";
@@ -25,6 +26,7 @@ app.use("/api", reviewsRouter);
 app.use("/api", teamRouter);
 app.use("/api", emailRouter);
 app.use("/api", vancanyRouter);
+app.use("/api", adminRouter);
 
 mongoose
   .connect(
@@ -38,11 +40,11 @@ mongoose
 
 //Pakistan0335
 
-try {
-  app.listen(8000);
-  console.log("connected");
-} catch {
-  (err) => {
-    console.log(err);
-  };
-}
+// try {
+//   app.listen(8000);
+//   console.log("connected");
+// } catch {
+//   (err) => {
+//     console.log(err);
+//   };
+// }

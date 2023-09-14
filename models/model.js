@@ -50,3 +50,11 @@ const vacancySchema = new mongoose.Schema({
   perks: Array,
 });
 export const vacanciesSchema = mongoose.model("vacancy", vacancySchema);
+
+const userSchemas = new mongoose.Schema({
+  email: String,
+  username: String,
+  password: String,
+});
+
+export const userSchema = mongoose.model("User", userSchemas);

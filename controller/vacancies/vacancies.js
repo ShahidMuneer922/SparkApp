@@ -58,3 +58,58 @@ export const idsAndTitleGet = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const updateVacancy = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const { title, intro, roles, qualifications, perks } = req.body;
+
+    const role = roles ? JSON.parse(roles) : [];
+    const qualification = qualifications ? JSON.parse(qualifications) : [];
+    const perk = perks ? JSON.parse(perks) : [];
+
+    const updatedVacancy = {
+      title,
+      intro,
+    };
+
+    const result = await vacanciesSchema.findByIdAndUpdate(id, updatedVacancy, {
+      new: true,
+    });
+    if (roles) {
+      result.roles = role;
+    }
+    if (qualifications) {
+      result.qualifications = qualification;
+    }
+    if (perks) {
+      result.perks = perk;
+    }
+    result.save();
+    if (!result) {
+      return res.status(404).json({ message: "Vacancy not found" });
+    }
+
+    return res.status(200).json({ message: "Vacancy updated successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({ message: "SOMETHING WENT WRONG" });
+  }
+};
+
+export const deleteVacancy = async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    const result = await vacanciesSchema.findByIdAndDelete(id);
+
+    if (!result) {
+      return res.status(404).json({ message: "Vacancy not found" });
+    }
+
+    return res.status(200).json({ message: "Vacancy deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({ message: "SOMETHING WENT WRONG" });
+  }
+};
