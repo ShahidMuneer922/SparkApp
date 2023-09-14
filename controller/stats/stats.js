@@ -1,6 +1,6 @@
 /** @format */
 
-import { statsSchema } from "../../models/model.js";
+import { statsSchema, teamsSchema } from "../../models/model.js";
 
 export const addStats = async (req, res) => {
   try {
@@ -47,16 +47,21 @@ export const addStats = async (req, res) => {
 export const getStats = async (req, res) => {
   try {
     const existingStats = await statsSchema.findOne();
+    const members = await teamsSchema.find();
     if (!existingStats) {
       return res.status(404).json({
         success: false,
         message: "Statistics data not found",
       });
     }
+    const list = {
+      ...existingStats.toObject(),
+      members: members.length,
+    };
 
     res.status(200).json({
       success: true,
-      data: existingStats,
+      data: list,
     });
   } catch (err) {
     console.error(err);
@@ -182,9 +187,9 @@ export const WelcomePage = async (req, res) => {
         </style>
       </head>
       <body>
-        <div class="center">
+        // <div class="center">
 
-        </div>
+        // </div>
       </body>
       </html>
     `;

@@ -10,6 +10,7 @@ import teamRouter from "./controller/team/teamRoutes.js";
 import emailRouter from "./controller/email/emailRoutes.js";
 import vancanyRouter from "./controller/vacancies/vacanciesRoutes.js";
 import adminRouter from "./controller/admin-login/adminRoutes.js";
+import Middle from "./middeleware.js";
 
 const doten = dotenv.config();
 import fileUpload from "express-fileupload";
@@ -20,13 +21,13 @@ app.use(express.json());
 app.use(fileUpload());
 app.use("/", statsRouter);
 
-app.use("/api", statsRouter);
-app.use("/api", portfolioRouter);
-app.use("/api", reviewsRouter);
-app.use("/api", teamRouter);
-app.use("/api", emailRouter);
-app.use("/api", vancanyRouter);
-app.use("/api", adminRouter);
+app.use("/api", Middle, statsRouter);
+app.use("/api", Middle, portfolioRouter);
+app.use("/api", Middle, reviewsRouter);
+app.use("/api", Middle, teamRouter);
+app.use("/api", Middle, emailRouter);
+app.use("/api", Middle, vancanyRouter);
+app.use("/api", Middle, adminRouter);
 
 mongoose
   .connect(
