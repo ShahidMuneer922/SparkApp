@@ -35,7 +35,7 @@ const reviewsSchema = new mongoose.Schema({
 export const reviews = mongoose.model("reviews", reviewsSchema);
 
 const teamSchema = new mongoose.Schema({
-  category: String,
+  position: String,
   image: String,
   name: String,
   rank: String,
