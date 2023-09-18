@@ -64,7 +64,7 @@ export const updateTeam = async (req, res) => {
 export const getAllTeams = async (req, res) => {
   try {
     const teams = await teamsSchema.find();
-
+    console.log(teams);
     res.status(200).json(JSON.stringify(teams));
   } catch (err) {
     console.error(err);
