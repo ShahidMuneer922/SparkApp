@@ -42,7 +42,7 @@ export const login = async (req, res, next) => {
   }
   if (!existingUser) {
     console.log("existing user");
-    return res.status(400).json({ message: "User does not exist" });
+    return res.status(400).json({ message: "User Does Not Exist" });
   }
   const validatePassword = bcryptjs.compareSync(
     password,
@@ -56,13 +56,11 @@ export const login = async (req, res, next) => {
     id: existingUser.id,
     username: existingUser.username,
     email: existingUser.email,
-    
-
   };
 
   const token = jwt.sign(data, jwtSecretKey);
 
-  res.status(200).json({ token });
+  res.status(200).json({ token, message: "User Login Successfully " });
 };
 
 export const deleteuser = async (req, res, next) => {
