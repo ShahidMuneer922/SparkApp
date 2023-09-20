@@ -109,6 +109,33 @@ export const updateStats = async (req, res) => {
   }
 };
 
+
+export const deleteStats = async (req, res) => {
+  try {
+    const statsId = req.query.id; 
+    const deletedStats = await statsSchema.findByIdAndDelete(statsId);
+    if (!deletedStats) {
+      return res.status(404).json({
+        success: false,
+        message: "Statistics data not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Statistics data deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: err,
+    });
+  }
+};
+
+
 export const WelcomePage = async (req, res) => {
   try {
     const html = `
