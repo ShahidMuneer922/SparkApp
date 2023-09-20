@@ -63,7 +63,13 @@ export const updateTeam = async (req, res) => {
 
 export const getAllTeams = async (req, res) => {
   try {
-    const teams = await teamsSchema.find();
+    const page = req.query.page || 1; 
+    const perPage = 5; 
+
+    const teams = await teamsSchema
+      .find()
+      .skip((page - 1) * perPage)
+      .limit(perPage);
 
     res.status(200).json(teams);
   } catch (err) {
