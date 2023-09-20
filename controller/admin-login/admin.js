@@ -53,8 +53,11 @@ export const login = async (req, res, next) => {
   }
   let jwtSecretKey = process.env.JWT_SECRET_KEY;
   let data = {
-    time: Date(),
-    userId: 12,
+    id: existingUser.id,
+    username: existingUser.username,
+    email: existingUser.email,
+    
+
   };
 
   const token = jwt.sign(data, jwtSecretKey);
