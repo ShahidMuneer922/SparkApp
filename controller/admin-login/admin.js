@@ -42,14 +42,14 @@ export const login = async (req, res, next) => {
   }
   if (!existingUser) {
     console.log("existing user");
-    return res.status(400).json({ message: "User Does Not Exist" });
+    return res.status(400).json({ message: "Invalid Credentials" });
   }
   const validatePassword = bcryptjs.compareSync(
     password,
     existingUser.password
   );
   if (!validatePassword) {
-    return res.status(400).json({ message: "Wrong Password" });
+    return res.status(400).json({ message: "Invalid Credentials" });
   }
   let jwtSecretKey = process.env.JWT_SECRET_KEY;
   let data = {
