@@ -31,7 +31,7 @@ export const addTeam = async (req, res) => {
 
 export const updateTeam = async (req, res) => {
   try {
-    const { rank, category, name } = req.body;
+    const { rank, postion, name } = req.body;
     const { teamId } = req.query;
 
     const existingTeam = await teamsSchema.findById(teamId);
@@ -47,8 +47,8 @@ export const updateTeam = async (req, res) => {
     if (rank) {
       existingTeam.rank = rank;
     }
-    if (category) {
-      existingTeam.category = category;
+    if (postion) {
+      existingTeam.postion = postion;
     }
     if (name) {
       existingTeam.name = name;
@@ -64,17 +64,16 @@ export const updateTeam = async (req, res) => {
 export const getAllTeams = async (req, res) => {
   let teams;
   try {
-    if(!req.query.page){
-     teams = await teamsSchema.find();
-    }else{
-      const page = req.query.page || 1; 
-    const perPage = req.query.limit || 5; 
+    if (!req.query.page) {
+      teams = await teamsSchema.find();
+    } else {
+      const page = req.query.page || 1;
+      const perPage = req.query.limit || 5;
 
-     teams = await teamsSchema
-      .find()
-      .skip((page - 1) * perPage)
-      .limit(perPage);
-
+      teams = await teamsSchema
+        .find()
+        .skip((page - 1) * perPage)
+        .limit(perPage);
     }
 
     res.status(200).json(teams);
