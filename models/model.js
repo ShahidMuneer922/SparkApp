@@ -18,6 +18,7 @@ const fileSchema = new mongoose.Schema({
   uuid: String,
   heading: String,
   description: String,
+  url: String,
 });
 
 export const File = mongoose.model("File", fileSchema);
@@ -58,3 +59,12 @@ const userSchemas = new mongoose.Schema({
 });
 
 export const userSchema = mongoose.model("User", userSchemas);
+
+const emailSchemas = new mongoose.Schema({
+  subject: String,
+  email: String,
+  body: String,
+  name: String,
+});
+
+export const emailSchema = mongoose.model("email", emailSchemas);

@@ -10,7 +10,7 @@ export const addPortfolio = async (req, res) => {
     const uuid = uuidv4();
 
     const file = req.files.file;
-    const { heading, description } = req.body;
+    const { heading, description, url } = req.body;
     const base64Data = await file.data.toString("base64");
 
     const newFile = new File({
@@ -20,6 +20,7 @@ export const addPortfolio = async (req, res) => {
       contentType: file.mimetype,
       heading: heading,
       description: description,
+      url: url,
     });
     await newFile.save();
     console.log(newFile);

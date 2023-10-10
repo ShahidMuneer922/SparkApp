@@ -1,7 +1,7 @@
 /** @format */
 
-import nodemailer from "nodemailer";
 import { transporter } from "./utils.js";
+import { emailSchema } from "../../models/model.js";
 
 export const sendMail = async (req, res) => {
   let file;
@@ -64,5 +64,70 @@ export const sendMail = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: "SOMETHING WENT WRONG", err });
+  }
+};
+
+export const sendMailBySparkai = async (req, res) => {
+  const { subject, email, body, name } = req.body;
+  var mailOptions = {
+    from: "shahidmuneerawan@gamil.com",
+    to: email,
+  };
+  try {
+    await transporter.sendMail(
+      {
+        ...mailOptions,
+        subject: subject,
+
+        html: body,
+      },
+      async function (error, info) {
+        if (error) {
+          console.log(error);
+          return res.status(400).json({ error });
+        } else {
+          console.log("Email sent: " + info.response);
+          const newEmail = new emailSchema({
+            subject: subject,
+            email: email,
+            body: body,
+            name: name,
+          });
+          await newEmail.save();
+          return res.status(200).json({ message: "Email sent successfully" });
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: "SOMETHING WENT WRONG", err });
+  }
+};
+
+export const getEmailById = async (req, res) => {
+  const emailId = req.query.id;
+
+  try {
+    const email = await emailSchema.findById(emailId);
+
+    if (!email) {
+      return res.status(404).json({ message: "Email not found" });
+    }
+
+    return res.status(200).json(email);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getAllEmails = async (req, res) => {
+  try {
+    const emails = await emailSchema.find();
+
+    return res.status(200).json(emails);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
