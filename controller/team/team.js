@@ -31,7 +31,7 @@ export const addTeam = async (req, res) => {
 
 export const updateTeam = async (req, res) => {
   try {
-    const { rank, postion, name } = req.body;
+    const { rank, position, name } = req.body;
     const { teamId } = req.query;
 
     const existingTeam = await teamsSchema.findById(teamId);
@@ -47,8 +47,8 @@ export const updateTeam = async (req, res) => {
     if (rank) {
       existingTeam.rank = rank;
     }
-    if (postion) {
-      existingTeam.postion = postion;
+    if (position) {
+      existingTeam.position = position;
     }
     if (name) {
       existingTeam.name = name;
