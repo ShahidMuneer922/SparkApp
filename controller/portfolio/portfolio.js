@@ -1,5 +1,5 @@
 /** @format */
-import { File } from "../../models/model.js";
+import { File, emailSchema } from "../../models/model.js";
 import { v4 as uuidv4 } from "uuid";
 
 export const addPortfolio = async (req, res) => {
@@ -53,7 +53,8 @@ export const getFile = async (req, res) => {
     const fileName = req.query.uuid;
 
     const file = await File.findOne({ uuid: fileName });
-    console.log(file);
+    const totalEmails = await emailSchema.find({ idOfVacancy: file.id });
+    console.log("length", totalEmails.length);
     if (!file) {
       return res.status(404).send("File not found");
     }
@@ -105,3 +106,5 @@ export const updatePortfolio = async (req, res) => {
     res.status(400).json({ message: "Something went wrong while updating" });
   }
 };
+
+// export const

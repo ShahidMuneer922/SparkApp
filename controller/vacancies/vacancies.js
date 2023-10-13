@@ -27,8 +27,29 @@ export const addVacancy = async (req, res) => {
 
 export const getVacancies = async (req, res) => {
   try {
-    const vacancies = await vacanciesSchema.find();
-
+    const vacancies = await vacanciesSchema.aggregate([
+      {
+        $lookup: {
+          from: "emails",
+          localField: "_id",
+          foreignField: "idOfVacancy",
+          as: "replies",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          info: 1,
+          roles: 1,
+          qualtifications: 1,
+          perks: 1,
+          // Other email fields you want to include
+          replyCount: { $size: "$replies" },
+        },
+      },
+    ]);
+    // console.log(a);
     if (vacancies.length === 0) {
       return res.status(404).json({ message: "No vacancies found" });
     }
