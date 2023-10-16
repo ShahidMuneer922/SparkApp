@@ -78,7 +78,7 @@ export const getAllTeams = async (req, res) => {
     }
     const count = await teamsSchema.countDocuments();
 
-    res.status(200).json({ teams, count, page });
+    res.status(200).json({ teams, count, page: Number(page) });
   } catch (err) {
     console.error(err);
     const error = JSON.stringify(err);
