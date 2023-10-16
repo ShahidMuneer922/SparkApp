@@ -62,6 +62,7 @@ export const updateTeam = async (req, res) => {
 };
 
 export const getAllTeams = async (req, res) => {
+  let page = 0;
   let teams;
   try {
     if (!req.query.page) {
