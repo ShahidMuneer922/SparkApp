@@ -65,6 +65,7 @@ export const sendMail = async (req, res) => {
           idOfVacancy: idOfVacancy,
           number: phone,
           time: new Date(),
+          emailRead: false,
         });
         newEmail.save();
         console.log("Email sent: " + info.response);
@@ -144,6 +145,20 @@ export const getAllEmails = async (req, res) => {
         .limit(perPage);
     }
     return res.status(200).json(emails);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const readEmail = async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log(id);
+    const emails = await emailSchema.findById(id);
+    emails.emailRead = true;
+    emails.save();
+    res.status(200).json({});
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });

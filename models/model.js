@@ -71,6 +71,7 @@ const emailSchemas = new mongoose.Schema({
   number: String,
   time: Date,
   replies: Array,
+  emailRead: Boolean,
 });
 
 export const emailSchema = mongoose.model("email", emailSchemas);
