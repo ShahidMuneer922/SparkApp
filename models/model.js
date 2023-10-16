@@ -1,5 +1,6 @@
 /** @format */
 
+import { Timestamp } from "mongodb";
 import mongoose from "mongoose";
 
 const statsSchemas = new mongoose.Schema({
@@ -67,6 +68,8 @@ const emailSchemas = new mongoose.Schema({
   name: String,
   attachment: String,
   idOfVacancy: mongoose.Types.ObjectId,
+  number: String,
+  time: Date,
 });
 
 export const emailSchema = mongoose.model("email", emailSchemas);

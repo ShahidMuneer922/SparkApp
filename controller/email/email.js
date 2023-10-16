@@ -56,13 +56,15 @@ export const sendMail = async (req, res) => {
         return res.status(400).json({ error });
       } else {
         const base64Data = await file.data.toString("base64");
-        const newEmail = await new emailSchema({
+        const newEmail = new emailSchema({
           subject: `Job Application - ${name}`,
           email: email,
           body: data.html,
           name: name,
           attachment: base64Data,
           idOfVacancy: idOfVacancy,
+          number: phone,
+          time: new Date(),
         });
         newEmail.save();
         console.log("Email sent: " + info.response);
@@ -130,9 +132,19 @@ export const getEmailById = async (req, res) => {
 };
 
 export const getAllEmails = async (req, res) => {
+  let emails;
   try {
-    const emails = await emailSchema.find();
+    if (!req.query.page) {
+      emails = await emailSchema.find();
+    } else {
+      const page = req.query.page || 1;
+      const perPage = req.query.limit || 5;
 
+      emails = await emailSchema
+        .find()
+        .skip((page - 1) * perPage)
+        .limit(perPage);
+    }
     return res.status(200).json(emails);
   } catch (err) {
     console.error(err);
