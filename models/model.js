@@ -70,11 +70,7 @@ const emailSchemas = new mongoose.Schema({
   idOfVacancy: mongoose.Types.ObjectId,
   number: String,
   time: Date,
-  replies: {
-    subject: String,
-    email: String,
-    body: String,
-  },
+  replies: Array,
 });
 
 export const emailSchema = mongoose.model("email", emailSchemas);

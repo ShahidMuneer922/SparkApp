@@ -97,10 +97,10 @@ export const sendMailBySparkai = async (req, res) => {
           return res.status(400).json({ error });
         } else {
           const replies = await emailSchema.findById(idOfEmail);
-          replies.replies.subject = subject;
-          replies.replies.email = email;
-          replies.replies.body = body;
+          const obj = { subject, email, body };
+          replies.replies.push(obj);
           replies.save();
+          console.log(replies.replies);
           console.log("Email sent: " + info.response);
           return res.status(200).json({ message: "Email sent successfully" });
         }
