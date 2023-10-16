@@ -68,7 +68,7 @@ export const getAllTeams = async (req, res) => {
     if (!req.query.page) {
       teams = await teamsSchema.find();
     } else {
-      const page = req.query.page || 1;
+      page = req.query.page || 1;
       const perPage = req.query.limit || 5;
 
       teams = await teamsSchema
