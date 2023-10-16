@@ -84,28 +84,28 @@ export const sendMailBySparkai = async (req, res) => {
     to: email,
   };
   try {
-    // await transporter.sendMail(
-    //   {
-    //     ...mailOptions,
-    //     subject: subject,
+    await transporter.sendMail(
+      {
+        ...mailOptions,
+        subject: subject,
 
-    //     html: body,
-    //   },
-    //   async function (error, info) {
-    //     if (error) {
-    //       console.log(error);
-    //       return res.status(400).json({ error });
-    //     } else {
-    //       console.log("Email sent: " + info.response);
-
-    //       return res.status(200).json({ message: "Email sent successfully" });
-    //     }
-
-    //   }
-    // );
-    const a = emailSchema.findById("6529102d9e7b45cd7b300738");
-    console.log(a.name);
-    res.status(200).json({ emails: "asdf" });
+        html: body,
+      },
+      async function (error, info) {
+        if (error) {
+          console.log(error);
+          return res.status(400).json({ error });
+        } else {
+          const replies = await emailSchema.findById(idOfEmail);
+          replies.replies.subject = subject;
+          replies.replies.email = email;
+          replies.replies.body = body;
+          replies.save();
+          console.log("Email sent: " + info.response);
+          return res.status(200).json({ message: "Email sent successfully" });
+        }
+      }
+    );
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: "SOMETHING WENT WRONG", err });
