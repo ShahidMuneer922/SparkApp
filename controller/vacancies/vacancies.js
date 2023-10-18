@@ -104,6 +104,9 @@ export const idsAndTitleGet = async (req, res) => {
       title: vacancy.title,
       time: vacancy.time,
       intro: vacancy.intro,
+      status: vacancy.status,
+      location: vacancy.location,
+      engagment: vacancy.engagment,
     }));
 
     return res.status(200).json(result);
