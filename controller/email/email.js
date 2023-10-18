@@ -50,6 +50,20 @@ export const sendMail = async (req, res) => {
   </div>
 </body>`,
     };
+    const body = `Job Application
+    I am writing to express my interest ${
+      extra ? `for the position of ${extra}` : ""
+    } at SparkAi. Here are my details:
+    
+      Name: ${name}
+     Email ${email}
+      Phone: ${phone}
+ 
+    ${coverLetter ? `${coverLetter}` : ""}
+    Thank you for considering my application. I look forward to the opportunity to discuss my qualifications further.\n
+    Sincerely,
+    ${name}
+    `;
     await transporter.sendMail(data, async function (error, info) {
       if (error) {
         console.log(error);
@@ -59,7 +73,7 @@ export const sendMail = async (req, res) => {
         const newEmail = new emailSchema({
           subject: `Job Application - ${name}`,
           email: email,
-          body: data.html,
+          body: body,
           name: name,
           attachment: base64Data,
           idOfVacancy: idOfVacancy,

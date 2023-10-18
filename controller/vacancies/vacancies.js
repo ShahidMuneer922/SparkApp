@@ -93,24 +93,47 @@ export const getVacancies = async (req, res) => {
 
 export const idsAndTitleGet = async (req, res) => {
   try {
-    const vacancies = await vacanciesSchema.find();
+    // const vacancies = await vacanciesSchema.find();
+
+    const vacancies = await vacanciesSchema.aggregate([
+      {
+        $lookup: {
+          from: "emails",
+          localField: "_id",
+          foreignField: "idOfVacancy",
+          as: "replies",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          time: 1,
+          intro: 1,
+          status: 1,
+          location: 1,
+          engagment: 1,
+          count: { $size: "$replies" },
+        },
+      },
+    ]);
 
     if (vacancies.length === 0) {
       return res.status(404).json({ message: "No vacancies found" });
     }
 
-    const result = vacancies.map((vacancy) => ({
-      id: vacancy._id,
-      title: vacancy.title,
-      time: vacancy.time,
-      intro: vacancy.intro,
-      status: vacancy.status,
-      location: vacancy.location,
-      engagment: vacancy.engagment,
-      count: 0,
-    }));
+    // const result = vacancies.map((vacancy) => ({
+    //   id: vacancy._id,
+    //   title: vacancy.title,
+    //   time: vacancy.time,
+    //   intro: vacancy.intro,
+    //   status: vacancy.status,
+    //   location: vacancy.location,
+    //   engagment: vacancy.engagment,
+    //   count: 0,
+    // }));
 
-    return res.status(200).json(result);
+    return res.status(200).json(vacancies);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
