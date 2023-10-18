@@ -171,3 +171,19 @@ export const deleteVacancy = async (req, res) => {
     return res.status(400).json({ message: "SOMETHING WENT WRONG" });
   }
 };
+
+export const getVacancyById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const vacancies = await vacanciesSchema.findById(id);
+
+    if (vacancies.length === 0) {
+      return res.status(404).json({ message: "No vacancies found" });
+    }
+
+    return res.status(200).json(vacancies);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
