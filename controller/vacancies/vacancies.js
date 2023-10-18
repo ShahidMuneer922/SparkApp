@@ -121,18 +121,6 @@ export const idsAndTitleGet = async (req, res) => {
     if (vacancies.length === 0) {
       return res.status(404).json({ message: "No vacancies found" });
     }
-
-    // const result = vacancies.map((vacancy) => ({
-    //   id: vacancy._id,
-    //   title: vacancy.title,
-    //   time: vacancy.time,
-    //   intro: vacancy.intro,
-    //   status: vacancy.status,
-    //   location: vacancy.location,
-    //   engagment: vacancy.engagment,
-    //   count: 0,
-    // }));
-
     return res.status(200).json(vacancies);
   } catch (err) {
     console.error(err);
