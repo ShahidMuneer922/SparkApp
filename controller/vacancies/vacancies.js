@@ -4,17 +4,39 @@ import { vacanciesSchema } from "../../models/model.js";
 
 export const addVacancy = async (req, res) => {
   try {
-    const { title, intro, roles, qualifications, perks } = req.body;
-    const role = roles ? JSON.parse(roles) : [];
-    const qualification = qualifications ? JSON.parse(qualifications) : [];
-    const perk = perks ? JSON.parse(perks) : [];
+    const {
+      title,
+      intro,
+      roles,
+      qualifications,
+      perks,
+      status,
+      location,
+      salary,
+      position,
+      engagment,
+      experience,
+      timeSlot,
+      skills,
+      expectations,
+    } = req.body;
 
     const newVacancy = new vacanciesSchema({
       title,
       intro,
-      roles: role,
-      qualifications: qualification,
-      perks: perk,
+      roles,
+      qualifications,
+      perks,
+      status,
+      time: new Date(),
+      location,
+      salary,
+      position,
+      engagment,
+      experience,
+      timeSlot,
+      skills,
+      expectations,
     });
 
     await newVacancy.save();
@@ -40,11 +62,20 @@ export const getVacancies = async (req, res) => {
         $project: {
           _id: 1,
           title: 1,
-          info: 1,
+          intro: 1,
           roles: 1,
-          qualtifications: 1,
+          qualifications: 1,
           perks: 1,
-          // Other email fields you want to include
+          status: 1,
+          time: 1,
+          location: 1,
+          salary: 1,
+          position: 1,
+          engagment: 1,
+          experience: 1,
+          timeSlot: 1,
+          skills: 1,
+          expectations: 1,
           replyCount: { $size: "$replies" },
         },
       },
@@ -71,6 +102,8 @@ export const idsAndTitleGet = async (req, res) => {
     const result = vacancies.map((vacancy) => ({
       id: vacancy._id,
       title: vacancy.title,
+      time: vacancy.time,
+      intro: vacancy.intro,
     }));
 
     return res.status(200).json(result);

@@ -48,8 +48,18 @@ const vacancySchema = new mongoose.Schema({
   title: String,
   intro: String,
   roles: Array,
-  qualifications: Array,
+  qualifications: String,
   perks: Array,
+  status: Boolean,
+  time: Date,
+  location: String,
+  salary: String,
+  position: String,
+  engagment: String,
+  experience: String,
+  timeSlot: String,
+  skills: Array,
+  expectations: String,
 });
 export const vacanciesSchema = mongoose.model("vacancy", vacancySchema);
 
