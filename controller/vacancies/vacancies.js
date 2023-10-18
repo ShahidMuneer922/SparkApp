@@ -107,6 +107,7 @@ export const idsAndTitleGet = async (req, res) => {
       status: vacancy.status,
       location: vacancy.location,
       engagment: vacancy.engagment,
+      count: 0,
     }));
 
     return res.status(200).json(result);
