@@ -146,19 +146,36 @@ export const getEmailById = async (req, res) => {
 
 export const getAllEmails = async (req, res) => {
   let emails;
+  let page;
   try {
-    if (!req.query.page) {
-      emails = await emailSchema.find();
-    } else {
-      const page = req.query.page || 1;
-      const perPage = req.query.limit || 5;
+    if (req.query.filter === true) {
+      if (!req.query.page) {
+        emails = await emailSchema.find({ emailRead: false });
+      } else {
+        page = req.query.page || 1;
+        const perPage = req.query.limit || 5;
 
-      emails = await emailSchema
-        .find()
-        .skip((page - 1) * perPage)
-        .limit(perPage);
+        emails = await emailSchema
+          .find({ emailRead: false })
+          .skip((page - 1) * perPage)
+          .limit(perPage);
+      }
+      console.log({ emails });
+      return res.status(200).json(emails);
+    } else {
+      if (!req.query.page) {
+        emails = await emailSchema.find();
+      } else {
+        page = req.query.page || 1;
+        const perPage = req.query.limit || 5;
+
+        emails = await emailSchema
+          .find({ emailRead: false })
+          .skip((page - 1) * perPage)
+          .limit(perPage);
+      }
+      return res.status(200).json(emails);
     }
-    return res.status(200).json(emails);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
