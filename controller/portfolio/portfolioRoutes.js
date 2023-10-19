@@ -6,6 +6,7 @@ import {
   getAllFiles,
   getFile,
   updatePortfolio,
+  deleteFile,
 } from "./portfolio.js";
 /** @format */
 
@@ -14,5 +15,6 @@ router.post("/addPortfolio", addPortfolio);
 router.get("/get", getAllFiles);
 router.get("/getFile", getFile);
 router.put("/updateFile", updatePortfolio);
+router.delete("/deleteFile", deleteFile);
 
 export default router;

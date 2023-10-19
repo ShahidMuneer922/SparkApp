@@ -122,4 +122,19 @@ export const updatePortfolio = async (req, res) => {
   }
 };
 
+export const deleteFile = async (req, res) => {
+  try {
+    const fileName = req.query.id;
+
+    const file = await File.findByIdAndDelete(fileName);
+
+    res.status(200).json({ message: "File Deleted Successfully" });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while retrieving the file" });
+  }
+};
+
 // export const
