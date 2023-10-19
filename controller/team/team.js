@@ -64,9 +64,11 @@ export const updateTeam = async (req, res) => {
 export const getAllTeams = async (req, res) => {
   let page;
   let teams;
+  let count;
   try {
     if (!req.query.page) {
       teams = await teamsSchema.find();
+      count = await teamsSchema.countDocuments();
     } else {
       page = req.query.page || 1;
       const perPage = req.query.limit || 5;
@@ -76,9 +78,9 @@ export const getAllTeams = async (req, res) => {
         .skip((page - 1) * perPage)
         .limit(perPage);
     }
-    const count = await teamsSchema.countDocuments();
+    count = await teamsSchema.countDocuments();
 
-    res.status(200).json({ result: teams, count, page: Number(page) });
+    res.status(200).json({ result: teams, count, page: Number(page) || 0 });
   } catch (err) {
     console.error(err);
     const error = JSON.stringify(err);

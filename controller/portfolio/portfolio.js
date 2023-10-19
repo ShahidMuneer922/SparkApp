@@ -34,9 +34,11 @@ export const addPortfolio = async (req, res) => {
 
 export const getAllFiles = async (req, res) => {
   let files;
+  let count;
   try {
     if (!req.query.page) {
       files = await File.find();
+      count = await File.countDocuments();
     } else {
       const page = req.query.page || 1;
       const perPage = req.query.limit || 5;
@@ -45,11 +47,13 @@ export const getAllFiles = async (req, res) => {
         .skip((page - 1) * perPage)
         .limit(perPage);
     }
+    count = await File.countDocuments();
 
     if (!files || files.length === 0) {
       return res.status(404).json({ error: "No files found" });
     }
-    return res.json(files);
+
+    return res.json({ files, count, page: Number(page) || 0 });
   } catch (err) {
     console.error(err);
     return res
