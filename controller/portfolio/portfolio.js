@@ -35,12 +35,13 @@ export const addPortfolio = async (req, res) => {
 export const getAllFiles = async (req, res) => {
   let files;
   let count;
+  let page;
   try {
     if (!req.query.page) {
       files = await File.find();
       count = await File.countDocuments();
     } else {
-      const page = req.query.page || 1;
+      page = req.query.page || 1;
       const perPage = req.query.limit || 5;
 
       files = await File.find()
