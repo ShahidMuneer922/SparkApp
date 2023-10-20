@@ -2,6 +2,8 @@
 
 import { transporter } from "./utils.js";
 import { emailSchema } from "../../models/model.js";
+import { s3Client } from "../../server.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const sendMail = async (req, res) => {
   let file;
@@ -69,13 +71,20 @@ export const sendMail = async (req, res) => {
         console.log(error);
         return res.status(400).json({ error });
       } else {
-        const base64Data = await file.data.toString("base64");
+        const command = new PutObjectCommand({
+          Bucket: "sparkai1",
+          Key: req.files.file.name,
+          Body: req.files.file.data,
+          ContentType: req.files.file.mimetype,
+        });
+
+        await s3Client.send(command);
         const newEmail = new emailSchema({
           subject: `Job Application - ${name}`,
           email: email,
           body: body,
           name: name,
-          attachment: base64Data,
+          attachment: `https://sparkai1.s3.amazonaws.com/${file.name}` || "",
           idOfVacancy: idOfVacancy,
           number: phone,
           time: new Date(),

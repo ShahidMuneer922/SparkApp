@@ -21,6 +21,8 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start_prod": "pm2 stop all && pm2 start server.js"
+
   }
 }
