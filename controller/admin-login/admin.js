@@ -3,6 +3,8 @@
 import { userSchema as User } from "../../models/model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { s3Client } from "../../server.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -71,4 +73,24 @@ export const deleteuser = async (req, res, next) => {
     return console.log(err);
   }
   return res.status(200).json({ message: "User deleted successfully" });
+};
+
+export const s3Bucket = async (req, res) => {
+  try {
+    console.log(req.files.file.name);
+    const command = new PutObjectCommand({
+      Bucket: "sparkai1",
+      Key: req.files.file.name,
+      Body: req.files.file.data,
+      ContentType: req.files.file.mimetype,
+    });
+
+    await s3Client.send(command);
+    console.log(req.files.file.data);
+
+    res.status(200).json("sdfa");
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: "something went wrong" });
+  }
 };

@@ -1,6 +1,8 @@
 /** @format */
 
 import { teamsSchema } from "../../models/model.js";
+import { s3Client } from "../../server.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const addTeam = async (req, res) => {
   try {
@@ -11,13 +13,21 @@ export const addTeam = async (req, res) => {
     }
 
     const file = req.files.file;
-    const base64 = file.data.toString("base64");
+    console.log(req.files.file.name);
+    const command = new PutObjectCommand({
+      Bucket: "sparkai1",
+      Key: req.files.file.name,
+      Body: req.files.file.data,
+      ContentType: req.files.file.mimetype,
+    });
+
+    await s3Client.send(command);
 
     const newTeam = await teamsSchema.create({
       rank,
       position,
       name,
-      image: base64,
+      image: `https://sparkai1.s3.amazonaws.com/${file.name}`,
     });
 
     return res
@@ -40,9 +50,16 @@ export const updateTeam = async (req, res) => {
     }
 
     if (req.files) {
-      const file = req.files.file;
-      const base64 = await file.data.toString("base64");
-      existingTeam.image = base64;
+      console.log(req.files.file.name);
+      const command = new PutObjectCommand({
+        Bucket: "sparkai1",
+        Key: req.files.file.name,
+        Body: req.files.file.data,
+        ContentType: req.files.file.mimetype,
+      });
+
+      await s3Client.send(command);
+      existingTeam.image = `https://sparkai1.s3.amazonaws.com/${file.name}`;
     }
     if (rank) {
       existingTeam.rank = rank;

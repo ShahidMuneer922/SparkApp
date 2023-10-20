@@ -11,8 +11,18 @@ import emailRouter from "./controller/email/emailRoutes.js";
 import vancanyRouter from "./controller/vacancies/vacanciesRoutes.js";
 import adminRouter from "./controller/admin-login/adminRoutes.js";
 import Middle from "./middeleware.js";
-
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 const doten = dotenv.config();
+
+export const s3Client = new S3Client({
+  region: "us-east-1",
+  credentials: {
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
+  },
+});
+
 import fileUpload from "express-fileupload";
 const PORT = process.env.PORT || 8000;
 

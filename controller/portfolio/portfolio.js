@@ -1,6 +1,8 @@
 /** @format */
 import { File, emailSchema } from "../../models/model.js";
 import { v4 as uuidv4 } from "uuid";
+import { s3Client } from "../../server.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const addPortfolio = async (req, res) => {
   try {
@@ -8,15 +10,22 @@ export const addPortfolio = async (req, res) => {
       return res.status(400).send("No files were uploaded.");
     }
     const uuid = uuidv4();
+    console.log(req.files.file.name);
+    const command = new PutObjectCommand({
+      Bucket: "sparkai1",
+      Key: req.files.file.name,
+      Body: req.files.file.data,
+      ContentType: req.files.file.mimetype,
+    });
 
+    await s3Client.send(command);
     const file = req.files.file;
     const { heading, description, url } = req.body;
-    const base64Data = await file.data.toString("base64");
 
     const newFile = new File({
       uuid: uuid,
       name: file.name,
-      data: base64Data,
+      data: `https://sparkai1.s3.amazonaws.com/${file.name}`,
       contentType: file.mimetype,
       heading: heading,
       description: description,
@@ -108,9 +117,17 @@ export const updatePortfolio = async (req, res) => {
       existingFile.description = description;
     }
     if (file) {
-      const base64Data = await file.data.toString("base64");
+      console.log(req.files.file.name);
+      const command = new PutObjectCommand({
+        Bucket: "sparkai1",
+        Key: req.files.file.name,
+        Body: req.files.file.data,
+        ContentType: req.files.file.mimetype,
+      });
+
+      await s3Client.send(command);
       existingFile.name = file.name;
-      existingFile.data = base64Data;
+      existingFile.data = `https://sparkai1.s3.amazonaws.com/${file.name}`;
       existingFile.contentType = file.mimetype;
     }
     await existingFile.save();
