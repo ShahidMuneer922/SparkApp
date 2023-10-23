@@ -11,8 +11,11 @@ import emailRouter from "./controller/email/emailRoutes.js";
 import vancanyRouter from "./controller/vacancies/vacanciesRoutes.js";
 import adminRouter from "./controller/admin-login/adminRoutes.js";
 import Middle from "./middeleware.js";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import clientMiddleware from "./clientMiddleware.js";
+import { S3Client } from "@aws-sdk/client-s3";
+import onlyClientRoutes from "./controller/adminRoutes/adminRoutes.js";
+import cors from "cors";
+
 const doten = dotenv.config();
 
 export const s3Client = new S3Client({
@@ -27,6 +30,7 @@ import fileUpload from "express-fileupload";
 const PORT = process.env.PORT || 8000;
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
 app.use("/", statsRouter);
@@ -38,6 +42,7 @@ app.use("/api", Middle, teamRouter);
 app.use("/api", Middle, emailRouter);
 app.use("/api", Middle, vancanyRouter);
 app.use("/api", Middle, adminRouter);
+app.use("/client", clientMiddleware, onlyClientRoutes);
 
 mongoose
   .connect(
