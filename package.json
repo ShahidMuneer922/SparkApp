@@ -23,6 +23,6 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
-    "start_prod": "pm2 stop all && pm2 start server.js"
+    "start_prod": "pm2 stop all && pm2 start server.js && pm2 logs"
   }
 }
