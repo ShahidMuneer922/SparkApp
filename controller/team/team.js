@@ -53,13 +53,13 @@ export const updateTeam = async (req, res) => {
       console.log(req.files.file.name);
       const command = new PutObjectCommand({
         Bucket: "sparkai1",
-        Key: req.files.file.name + Date.now(),
+        Key: req.files.file.name,
         Body: req.files.file.data,
         ContentType: req.files.file.mimetype,
       });
 
       await s3Client.send(command);
-      existingTeam.image = `https://sparkai1.s3.amazonaws.com/${file.name}`;
+      existingTeam.image = `https://sparkai1.s3.amazonaws.com/${req.files.file.name}`;
     }
     if (rank) {
       existingTeam.rank = rank;
