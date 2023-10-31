@@ -131,30 +131,74 @@ export const idsAndTitleGet = async (req, res) => {
 export const updateVacancy = async (req, res) => {
   try {
     const { id } = req.query;
-    const { title, intro, roles, qualifications, perks } = req.body;
-
-    const role = roles ? JSON.parse(roles) : [];
-    const qualification = qualifications ? JSON.parse(qualifications) : [];
-    const perk = perks ? JSON.parse(perks) : [];
-
-    const updatedVacancy = {
+    const {
       title,
       intro,
+      roles,
+      qualifications,
+      perks,
+      status,
+      location,
+      salary,
+      position,
+      engagment,
+      experience,
+      timeSlot,
+      skills,
+      expectations,
+    } = req.body;
+
+    const data = {
+      title,
+      intro,
+      roles,
+      qualifications,
+      perks,
+      status,
+      location,
+      salary,
+      position,
+      engagment,
+      experience,
+      timeSlot,
+      skills,
+      expectations,
     };
 
-    const result = await vacanciesSchema.findByIdAndUpdate(id, updatedVacancy, {
+    const result = await vacanciesSchema.findByIdAndUpdate(id, data, {
       new: true,
     });
-    if (roles) {
-      result.roles = role;
-    }
-    if (qualifications) {
-      result.qualifications = qualification;
-    }
-    if (perks) {
-      result.perks = perk;
-    }
-    result.save();
+    // if (engagment) {
+    //   result.engagment = engagment;
+    // }
+    // if (position) {
+    //   result.position = position;
+    // }
+    // if (salary) {
+    //   result.salary = salary;
+    // }
+    // if (location) {
+    //   result.location = location;
+    // }
+    // if (status) {
+    //   result.status = status;
+    // }
+    // if (intro) {
+    //   result.intro = intro;
+    // }
+    // if (title) {
+    //   result.title = title;
+    // }
+    // if (roles) {
+    //   result.roles = roles;
+    // }
+    // if (qualifications) {
+    //   result.qualifications = qualifications;
+    // }
+    // if (perks) {
+    //   result.perks = perks;
+    // }
+    // result.save();
     if (!result) {
       return res.status(404).json({ message: "Vacancy not found" });
     }
