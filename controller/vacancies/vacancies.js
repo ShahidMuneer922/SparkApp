@@ -117,11 +117,11 @@ export const idsAndTitleGet = async (req, res) => {
         },
       },
     ]);
-
+    count = await vacanciesSchema.countDocuments();
     if (vacancies.length === 0) {
       return res.status(404).json({ message: "No vacancies found" });
     }
-    return res.status(200).json(vacancies);
+    return res.status(200).json({ vacancies, count });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
