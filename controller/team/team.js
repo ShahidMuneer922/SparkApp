@@ -53,7 +53,7 @@ export const updateTeam = async (req, res) => {
       console.log(req.files.file.name);
       const command = new PutObjectCommand({
         Bucket: "sparkai1",
-        Key: req.files.file.name,
+        Key: req.files.file.name + Date.now(),
         Body: req.files.file.data,
         ContentType: req.files.file.mimetype,
       });
