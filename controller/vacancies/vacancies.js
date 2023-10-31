@@ -117,7 +117,7 @@ export const idsAndTitleGet = async (req, res) => {
         },
       },
     ]);
-    count = await vacanciesSchema.countDocuments();
+    const count = await vacanciesSchema.countDocuments();
     if (vacancies.length === 0) {
       return res.status(404).json({ message: "No vacancies found" });
     }
