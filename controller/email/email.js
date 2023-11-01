@@ -169,8 +169,8 @@ export const getAllEmails = async (req, res) => {
           .skip((page - 1) * perPage)
           .limit(perPage);
       }
-      console.log({ emails });
-      return res.status(200).json(emails);
+      const count = await emailSchema.countDocuments();
+      return res.status(200).json({ emails, count });
     } else {
       if (!req.query.page) {
         emails = await emailSchema.find();
@@ -183,7 +183,9 @@ export const getAllEmails = async (req, res) => {
           .skip((page - 1) * perPage)
           .limit(perPage);
       }
-      return res.status(200).json(emails);
+      const count = await emailSchema.countDocuments();
+
+      return res.status(200).json({ emails, count });
     }
   } catch (err) {
     console.error(err);
