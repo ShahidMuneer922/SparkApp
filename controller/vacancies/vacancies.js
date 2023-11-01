@@ -92,31 +92,38 @@ export const getVacancies = async (req, res) => {
 };
 
 export const idsAndTitleGet = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.limit) || 5;
   try {
     // const vacancies = await vacanciesSchema.find();
 
-    const vacancies = await vacanciesSchema.aggregate([
-      {
-        $lookup: {
-          from: "emails",
-          localField: "_id",
-          foreignField: "idOfVacancy",
-          as: "replies",
+    const skip = (page - 1) * pageSize;
+
+    const vacancies = await vacanciesSchema
+      .aggregate([
+        {
+          $lookup: {
+            from: "emails",
+            localField: "_id",
+            foreignField: "idOfVacancy",
+            as: "replies",
+          },
         },
-      },
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          time: 1,
-          intro: 1,
-          status: 1,
-          location: 1,
-          engagment: 1,
-          count: { $size: "$replies" },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            time: 1,
+            intro: 1,
+            status: 1,
+            location: 1,
+            engagment: 1,
+            count: { $size: "$replies" },
+          },
         },
-      },
-    ]);
+      ])
+      .skip(skip)
+      .limit(pageSize);
     const count = await vacanciesSchema.countDocuments();
     if (vacancies.length === 0) {
       return res.status(404).json({ message: "No vacancies found" });
