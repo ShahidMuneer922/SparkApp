@@ -31,12 +31,28 @@ export const addReview = async (req, res) => {
 
 export const getAllReviews = async (req, res) => {
   try {
-    const allReviews = await reviews.find();
+    let allReviews;
+    let count;
+    let page;
+
+    if (!req.query.page) {
+      allReviews = await reviews.find();
+      count = await reviews.countDocuments();
+    } else {
+      page = req.query.page || 1;
+      const perPage = req.query.limit || 5;
+
+      allReviews = await reviews
+        .find()
+        .skip((page - 1) * perPage)
+        .limit(perPage);
+    }
+    count = await reviews.countDocuments();
 
     if (!allReviews || allReviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
-    res.status(200).json({ reviews: allReviews });
+    res.status(200).json({ allReviews, count });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
