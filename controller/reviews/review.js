@@ -21,6 +21,12 @@ export const addReview = async (req, res) => {
       newFile.data = base64Data;
       newFile.contentType = file.contentType;
       await newFile.save();
+    } else {
+      newFile.fileName = null;
+      newFile.data = null;
+      newFile.contentType = null;
+      newFile.data = null;
+      await newFile.save();
     }
     res.status(200).json({ message: "File uploaded successfully" });
   } catch (err) {
