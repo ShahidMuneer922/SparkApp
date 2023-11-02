@@ -98,7 +98,7 @@ export const updatePortfolio = async (req, res) => {
   try {
     let file;
     const uuid = req.query.uuid;
-    const { heading, description } = req.body;
+    const { heading, description, url } = req.body;
     if (req.files) {
       file = req.files.file;
     }
@@ -111,6 +111,9 @@ export const updatePortfolio = async (req, res) => {
 
     if (heading) {
       existingFile.heading = heading;
+    }
+    if (url) {
+      existingFile.url = url;
     }
 
     if (description) {
