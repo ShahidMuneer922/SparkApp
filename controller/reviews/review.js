@@ -42,7 +42,7 @@ export const getAllReviews = async (req, res) => {
     let page;
 
     if (!req.query.page) {
-      allReviews = await reviews.find();
+      allReviews = (await reviews.find()).reverse();
       count = await reviews.countDocuments();
     } else {
       page = req.query.page || 1;
@@ -51,7 +51,8 @@ export const getAllReviews = async (req, res) => {
       allReviews = await reviews
         .find()
         .skip((page - 1) * perPage)
-        .limit(perPage);
+        .limit(perPage)
+        .sort({ _id: -1 });
     }
     count = await reviews.countDocuments();
 

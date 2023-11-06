@@ -84,7 +84,7 @@ export const getAllTeams = async (req, res) => {
   let count;
   try {
     if (!req.query.page) {
-      teams = await teamsSchema.find();
+      teams = (await teamsSchema.find()).reverse();
       count = await teamsSchema.countDocuments();
     } else {
       page = req.query.page || 1;
@@ -94,6 +94,7 @@ export const getAllTeams = async (req, res) => {
         .find()
         .skip((page - 1) * perPage)
         .limit(perPage);
+      // .sort({ _id: -1 });
     }
     count = await teamsSchema.countDocuments();
 

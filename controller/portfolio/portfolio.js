@@ -47,7 +47,7 @@ export const getAllFiles = async (req, res) => {
   let page;
   try {
     if (!req.query.page) {
-      files = await File.find();
+      files = (await File.find()).reverse();
       count = await File.countDocuments();
     } else {
       page = req.query.page || 1;
@@ -55,7 +55,8 @@ export const getAllFiles = async (req, res) => {
 
       files = await File.find()
         .skip((page - 1) * perPage)
-        .limit(perPage);
+        .limit(perPage)
+        .sort({ _id: -1 });
     }
     count = await File.countDocuments();
 

@@ -79,8 +79,10 @@ export const getVacancies = async (req, res) => {
           replyCount: { $size: "$replies" },
         },
       },
+      {
+        $sort: { _id: -1 },
+      },
     ]);
-    // console.log(a);
     if (vacancies.length === 0) {
       return res.status(404).json({ message: "No vacancies found" });
     }
