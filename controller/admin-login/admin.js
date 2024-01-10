@@ -5,9 +5,18 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { s3Client } from "../../server.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { validateUser, validateLogin } from "../../validator/userValidation.js";
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
+  const data = { username, email, password };
+
+  try {
+    await validateUser(data);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).json({ message: `${error.message} ` });
+  }
   let existingUser;
   try {
     existingUser = await User.findOne({ email });
@@ -36,6 +45,12 @@ export const signup = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   const { username, password } = req.body;
+  try {
+    await validateLogin({ username, password });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).json({ message: error.message });
+  }
   let existingUser;
   try {
     existingUser = await User.findOne({ username });
@@ -67,6 +82,12 @@ export const login = async (req, res, next) => {
 
 export const deleteuser = async (req, res, next) => {
   const { id } = req.body;
+  try {
+    await validateDeleteUser({ id });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).json({ message: error.message });
+  }
   try {
     const deletedUser = await User.findByIdAndRemove(id);
   } catch (err) {
