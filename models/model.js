@@ -47,7 +47,7 @@ export const teamsSchema = mongoose.model("team", teamSchema);
 const vacancySchema = new mongoose.Schema({
   title: String,
   intro: String,
-  roles: String,
+  roles: Array,
   qualifications: String,
   perks: Array,
   status: Boolean,
