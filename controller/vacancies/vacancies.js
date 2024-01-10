@@ -177,6 +177,7 @@ export const updateVacancy = async (req, res) => {
     const result = await vacanciesSchema.findByIdAndUpdate(id, data, {
       new: true,
     });
+
     // if (engagment) {
     //   result.engagment = engagment;
     // }
@@ -239,13 +240,14 @@ export const deleteVacancy = async (req, res) => {
 export const getVacancyById = async (req, res) => {
   try {
     const { id } = req.query;
-    const vacancies = await vacanciesSchema.findById(id);
+    console.log(id);
+    const vacancy = await vacanciesSchema.findById(id);
 
-    if (vacancies.length === 0) {
-      return res.status(404).json({ message: "No vacancies found" });
+    if (!vacancy) {
+      return res.status(404).json({ message: "No vacancy found" });
     }
 
-    return res.status(200).json(vacancies);
+    return res.status(200).json(vacancy);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
